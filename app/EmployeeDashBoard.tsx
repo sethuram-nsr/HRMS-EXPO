@@ -30,9 +30,9 @@ export default function EmployeeDashBoard() {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
 
-  const [employees, setEmployees] = useState([
+  const [employees, setEmployees] = useState<any>([
     { id: 1, name: 'John Doe', position: 'Software Engineer', department: 'Engineering', email: 'john@company.com', status: 'Active', salary: 75000 },
     { id: 2, name: 'Jane Smith', position: 'Product Manager', department: 'Product', email: 'jane@company.com', status: 'Active', salary: 85000 },
     { id: 3, name: 'Mike Johnson', position: 'UX Designer', department: 'Design', email: 'mike@company.com', status: 'Active', salary: 70000 },
@@ -40,7 +40,7 @@ export default function EmployeeDashBoard() {
     { id: 5, name: 'Tom Brown', position: 'DevOps Engineer', department: 'Engineering', email: 'tom@company.com', status: 'On Leave', salary: 78000 }
   ]);
 
-  const [attendance, setAttendance] = useState([
+  const [attendance, setAttendance] = useState<any>([
     { id: 1, employeeId: 1, date: '2025-11-21', status: 'Present', checkIn: '09:00', checkOut: '18:00' },
     { id: 2, employeeId: 2, date: '2025-11-21', status: 'Present', checkIn: '08:45', checkOut: '17:30' },
     { id: 3, employeeId: 3, date: '2025-11-21', status: 'Present', checkIn: '09:15', checkOut: '18:15' },
@@ -48,7 +48,7 @@ export default function EmployeeDashBoard() {
     { id: 5, employeeId: 5, date: '2025-11-21', status: 'Absent', checkIn: '', checkOut: '' }
   ]);
 
-  const [leaves, setLeaves] = useState([
+  const [leaves, setLeaves] = useState<any>([
     { id: 1, employeeId: 1, type: 'Sick Leave', startDate: '2025-11-25', endDate: '2025-11-26', status: 'Pending', reason: 'Medical appointment' },
     { id: 2, employeeId: 2, type: 'Vacation', startDate: '2025-12-01', endDate: '2025-12-05', status: 'Approved', reason: 'Family vacation' },
     { id: 3, employeeId: 3, type: 'Personal Leave', startDate: '2025-11-28', endDate: '2025-11-28', status: 'Pending', reason: 'Personal matter' }
@@ -58,8 +58,8 @@ export default function EmployeeDashBoard() {
     name: '', position: '', department: '', email: '', salary: '', status: 'Active'
   });
 
-  const openModal = (type, employee = null) => {
-    setModalType(type);
+  const openModal = (type=null, employee = null) => {
+    setModalType(type==null ? '' : type);
     if (employee) {
       setSelectedEmployee(employee);
       setFormData(employee);
@@ -97,7 +97,7 @@ export default function EmployeeDashBoard() {
     closeModal();
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id:any) => {
     Alert.alert(
       'Delete Employee',
       'Are you sure you want to delete this employee?',
@@ -112,8 +112,8 @@ export default function EmployeeDashBoard() {
     );
   };
 
-  const handleLeaveAction = (leaveId, action) => {
-    setLeaves(leaves.map(leave => 
+  const handleLeaveAction = (leaveId=null, action=null) => {
+    setLeaves(leaves.map(leave=> 
       leave.id === leaveId ? { ...leave, status: action } : leave
     ));
   };
@@ -130,7 +130,7 @@ export default function EmployeeDashBoard() {
   };
 
   // Stat Card Component
-  const StatCard = ({ title, value, color, icon: Icon }) => (
+  const StatCard = ({ title, value, color, icon: Icon }:any) => (
     <View style={[styles.statCard, { backgroundColor: color }]}>
       <View style={styles.statContent}>
         <View>
@@ -191,7 +191,7 @@ export default function EmployeeDashBoard() {
   );
 
   // Employee Item Component
-  const EmployeeItem = ({ employee }) => (
+  const EmployeeItem = ({ employee }:any) => (
     <View style={styles.employeeItem}>
       <View style={styles.employeeInfo}>
         <Text style={styles.employeeName}>{employee.name}</Text>
@@ -357,7 +357,7 @@ export default function EmployeeDashBoard() {
   );
 
   // Tab Button Component
-  const TabButton = ({ id, label, icon: Icon, isActive, onPress }) => (
+  const TabButton = ({ id, label, icon: Icon, isActive, onPress }:any) => (
     <TouchableOpacity
       style={[styles.tabButton, isActive && styles.tabButtonActive]}
       onPress={onPress}
@@ -593,7 +593,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3b82f6',
   },
   tabButtonText: {
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: '500',
     color: '#6b7280',
   },

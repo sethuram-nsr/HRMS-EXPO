@@ -24,15 +24,23 @@ import {
   Search, 
   X 
 } from 'lucide-react-native';
+import CheckInOut from '@/Components/CheckinCheckout';
+import { navigate } from 'expo-router/build/global-state/routing';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 export default function AdminDashBoard() {
+  const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [attendanceModalVisible, setAttendanceModalVisible] = useState(false);
+const [attendanceModalMessage, setAttendanceModalMessage] = useState("");
 
-  const [employees, setEmployees] = useState([
+  const [employees, setEmployees] = useState<any>([
     { id: 1, name: 'sethuram ', position: 'Software Engineer', department: 'Engineering', email: 'john@company.com', status: 'Active', salary: 75000 },
     { id: 2, name: 'Mugilan', position: 'Product Manager', department: 'Product', email: 'jane@company.com', status: 'Active', salary: 85000 },
     { id: 3, name: 'surendar', position: 'UX Designer', department: 'Design', email: 'mike@company.com', status: 'Active', salary: 70000 },
@@ -112,6 +120,13 @@ export default function AdminDashBoard() {
       ]
     );
   };
+const logOut = () => {
+  debugger 
+  navigation.reset({
+    index: 0,
+    routes: [{ name: "Login" }],
+  });
+};
 
   const handleLeaveAction = (leaveId, action) => {
     setLeaves(leaves.map(leave => 
@@ -170,6 +185,12 @@ export default function AdminDashBoard() {
           icon={Calendar}
         />
       </View>
+      <CheckInOut 
+    showModal={(msg) => {
+        setAttendanceModalMessage(msg);
+        setAttendanceModalVisible(true);
+    }}
+/>
 
       <View style={styles.chartContainer}>
         <Text style={styles.sectionTitle}>Attendance Overview</Text>
@@ -263,8 +284,8 @@ export default function AdminDashBoard() {
       <Text style={styles.sectionTitle}>Today's Attendance - November 21, 2025</Text>
       <FlatList
         data={attendance}
-        renderItem={({ item }) => {
-          const hours = item.checkIn && item.checkOut ? 
+        renderItem={({ item }:any) => {
+          const hours :any = item.checkIn && item.checkOut ? 
             ((new Date(`2025-11-21 ${item.checkOut}`) - new Date(`2025-11-21 ${item.checkIn}`)) / 3600000).toFixed(1) : 
             '-';
           
@@ -364,6 +385,7 @@ export default function AdminDashBoard() {
     </TouchableOpacity>
   );
 
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
@@ -376,7 +398,7 @@ export default function AdminDashBoard() {
         </View>
         <TouchableOpacity style={styles.logoutButton}>
           <LogOut size={20} color="#6b7280" />
-          <Text style={styles.logoutText}>Logout</Text>
+          <Text onPress={logOut} style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
 
@@ -509,6 +531,24 @@ export default function AdminDashBoard() {
           </View>
         </View>
       </Modal>
+      <Modal
+  visible={attendanceModalVisible}
+  transparent={true}
+  animationType="fade"
+>
+  <View style={styles.modalOverlay}>
+    <View style={styles.modalBox}>
+      <Text style={styles.modalText}>{attendanceModalMessage}</Text>
+      <TouchableOpacity
+        style={styles.modalBtn}
+        onPress={() => setAttendanceModalVisible(false)}
+      >
+        <Text style={styles.modalBtnText}>OK</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
     </SafeAreaView>
   );
 }
@@ -925,4 +965,39 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '500',
   },
+    //  modalOverlay: {
+    //     flex: 1,
+    //     backgroundColor: "rgba(0,0,0,0.5)",
+    //     alignItems: "center",
+    //     justifyContent: "center",
+    // },
+
+    modalBox: {
+        width: "80%",
+        backgroundColor: "#fff",
+        borderRadius: 12,
+        padding: 20,
+        elevation: 5,
+        alignItems: "center",
+    },
+
+    modalText: {
+        fontSize: 16,
+        fontWeight: "600",
+        marginBottom: 15,
+        textAlign: "center",
+    },
+
+    modalBtn: {
+        backgroundColor: "#0b84ff",
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        borderRadius: 8,
+    },
+
+    modalBtnText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "700",
+    },
 });

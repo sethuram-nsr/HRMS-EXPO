@@ -3,7 +3,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import img from "./../assets/logo.png";
+import img from "../assets/images/icon.png";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootSiblingParent } from 'react-native-root-siblings';

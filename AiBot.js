@@ -31,8 +31,6 @@ export default function AiBot({ navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
-      
-
       <View style={styles.header}>
         <Pressable onPress={() => navigation.navigate("Login")}>
           <Icon name="arrow-left" size={30} color="black" style={{ marginHorizontal: 15 }} />
@@ -42,13 +40,16 @@ export default function AiBot({ navigation }) {
       </View>
 
       <View style={{ height: webViewHeight }}>
-      <WebView
-  originWhitelist={["*"]}
-  source={require("./assets/bot.html")}
-  style={{ flex: 1 }}
-  javaScriptEnabled={true}
-  domStorageEnabled={true}
-/>
+        <WebView
+          originWhitelist={["*"]}
+          mixedContentMode="always"
+          allowFileAccess={true}
+          allowUniversalAccessFromFileURLs={true}
+          source={require("./assets/bot.html")}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+        />
+
 
       </View>
 

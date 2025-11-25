@@ -25,10 +25,7 @@ import {
   X 
 } from 'lucide-react-native';
 import CheckInOut from '@/Components/CheckinCheckout';
-import { navigate } from 'expo-router/build/global-state/routing';
 import { useNavigation } from '@react-navigation/native';
-
-
 
 export default function AdminDashBoard() {
   const navigation = useNavigation();
@@ -36,9 +33,9 @@ export default function AdminDashBoard() {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   const [attendanceModalVisible, setAttendanceModalVisible] = useState(false);
-const [attendanceModalMessage, setAttendanceModalMessage] = useState("");
+  const [attendanceModalMessage, setAttendanceModalMessage] = useState("");
 
   const [employees, setEmployees] = useState<any>([
     { id: 1, name: 'sethuram ', position: 'Software Engineer', department: 'Engineering', email: 'john@company.com', status: 'Active', salary: 75000 },
@@ -46,7 +43,6 @@ const [attendanceModalMessage, setAttendanceModalMessage] = useState("");
     { id: 3, name: 'surendar', position: 'UX Designer', department: 'Design', email: 'mike@company.com', status: 'Active', salary: 70000 },
     { id: 4, name: 'fazil', position: 'HR Manager', department: 'Human Resources', email: 'sarah@company.com', status: 'Active', salary: 72000 },
     { id: 5, name: 'vikram', position: 'DevOps Engineer', department: 'Engineering', email: 'tom@company.com', status: 'On Leave', salary: 78000 }
-    // { id: 6, name: 'nabil', position: 'DevOps Engineer', department: 'Engineering', email: 'tom@company.com', status: 'On Leave', salary: 78000 }
   ]);
 
   const [attendance, setAttendance] = useState([
@@ -67,7 +63,7 @@ const [attendanceModalMessage, setAttendanceModalMessage] = useState("");
     name: '', position: '', department: '', email: '', salary: '', status: 'Active'
   });
 
-  const openModal = (type=null, employee = null) => {
+ const openModal = (type: any = null, employee: any = null) => {
     setModalType(type===null ? '' : type);
     if (employee) {
       setSelectedEmployee(employee);
@@ -91,6 +87,7 @@ const [attendanceModalMessage, setAttendanceModalMessage] = useState("");
       return;
     }
 
+    // FIX APPLIED HERE ✔
     if (modalType === 'addEmployee') {
       const newEmployee = {
         id: employees.length + 1,
@@ -98,11 +95,19 @@ const [attendanceModalMessage, setAttendanceModalMessage] = useState("");
         salary: parseFloat(formData.salary) || 0
       };
       setEmployees([...employees, newEmployee]);
-    } else {
-      setEmployees(employees.map(emp => 
-        emp.id === selectedEmployee.id ? { ...emp, ...formData, salary: parseFloat(formData.salary) } : emp
-      ));
+    } 
+    
+    // FIXED: Only run when editing an employee
+    else if (selectedEmployee) {
+      setEmployees(
+        employees?.map((emp: { id: any; }) =>
+          emp.id === selectedEmployee.id
+            ? { ...emp, ...formData, salary: parseFloat(formData.salary) }
+            : emp
+        )
+      );
     }
+
     closeModal();
   };
 
@@ -115,35 +120,36 @@ const [attendanceModalMessage, setAttendanceModalMessage] = useState("");
         { 
           text: 'Delete', 
           style: 'destructive',
-          onPress: () => setEmployees(employees.filter(emp => emp.id !== id))
+          onPress: () => setEmployees(employees.filter((emp: { id: null; }) => emp.id !== id))
         }
       ]
     );
   };
-const logOut = () => {
-  debugger 
-  navigation.reset({
-    index: 0,
-    routes: [{ name: "Login" }],
-  });
-};
 
-  const handleLeaveAction = (leaveId, action) => {
+  // const logOut = () => {
+  //   navigation.reset({
+  //     index: 0,
+  //     routes: [{ name: "Login" }],
+  //   });
+  // };
+
+  const handleLeaveAction = (leaveId: number, action: string) => {
     setLeaves(leaves.map(leave => 
       leave.id === leaveId ? { ...leave, status: action } : leave
     ));
   };
 
-  const filteredEmployees = employees.filter(emp =>
+  const filteredEmployees = employees.filter((emp: { name: string; position: string; department: string; }) =>
     emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     emp.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
     emp.department.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getEmployeeName = (employeeId) => {
-    const emp = employees.find(e => e.id === employeeId);
-    return emp ? emp.name : 'Unknown';
-  };
+  const getEmployeeName = (employeeId: any) => {
+  const emp = employees.find((e: { id: any }) => e.id === employeeId);
+  return emp ? emp.name : 'Unknown';
+};
+
 
   const StatCard = ({ title, value, color, icon: Icon }:any) => (
     <View style={[styles.statCard, { backgroundColor: color }]}>
@@ -160,42 +166,29 @@ const logOut = () => {
   const DashboardView = () => (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.statsGrid}>
-        <StatCard
-          title="Total Employees"
-          value={employees.length.toString()}
-          color="#3b82f6"
-          icon={Users}
-        />
-        <StatCard
-          title="Present Today"
-          value={attendance.filter(a => a.status === 'Present').length.toString()}
-          color="#10b981"
-          icon={Clock}
-        />
-        <StatCard
-          title="Pending Leaves"
-          value={leaves.filter(l => l.status === 'Pending').length.toString()}
-          color="#f59e0b"
-          icon={FileText}
-        />
-        <StatCard
-          title="On Leave"
-          value={employees.filter(e => e.status === 'On Leave').length.toString()}
-          color="#8b5cf6"
-          icon={Calendar}
-        />
+        <StatCard title="Total Employees" value={employees.length.toString()} color="#3b82f6" icon={Users} />
+        <StatCard title="Present Today" value={attendance.filter(a => a.status === 'Present').length.toString()} color="#10b981" icon={Clock} />
+        <StatCard title="Pending Leaves" value={leaves.filter(l => l.status === 'Pending').length.toString()} color="#f59e0b" icon={FileText} />
+        <StatCard title="On Leave" value={employees.filter((e: { status: string; }) => e.status === 'On Leave').length.toString()} color="#8b5cf6" icon={Calendar} />
       </View>
-      <CheckInOut 
-    showModal={(msg) => {
-        setAttendanceModalMessage(msg);
-        setAttendanceModalVisible(true);
-    }}
+
+      {/* <CheckInOut 
+        showModal={(msg) => {
+          setAttendanceModalMessage(msg);
+          setAttendanceModalVisible(true);
+        }}
+      /> */}
+      <CheckInOut
+  showModal={(msg: any) => {
+    setAttendanceModalMessage(msg);
+    setAttendanceModalVisible(true);
+  }}
 />
 
       <View style={styles.chartContainer}>
         <Text style={styles.sectionTitle}>Attendance Overview</Text>
         <View style={styles.simpleChart}>
-          <Text style={styles.chartNote}>Charts would be implemented here using react-native-chart-kit or similar library</Text>
+          <Text style={styles.chartNote}>Charts would be implemented here</Text>
         </View>
       </View>
 
@@ -218,6 +211,7 @@ const logOut = () => {
         <Text style={styles.employeeDepartment}>{employee.department}</Text>
         <Text style={styles.employeeEmail}>{employee.email}</Text>
       </View>
+
       <View style={styles.employeeDetails}>
         <View style={[
           styles.statusBadge,
@@ -230,18 +224,14 @@ const logOut = () => {
             {employee.status}
           </Text>
         </View>
+
         <Text style={styles.salaryText}>${employee.salary.toLocaleString()}</Text>
+
         <View style={styles.actionButtons}>
-          <TouchableOpacity 
-            style={styles.actionButton}
-            onPress={() => openModal('editEmployee', employee)}
-          >
+          <TouchableOpacity style={styles.actionButton} onPress={() => openModal('editEmployee', employee)}>
             <Edit2 size={18} color="#3b82f6" />
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.actionButton}
-            onPress={() => handleDelete(employee.id)}
-          >
+          <TouchableOpacity style={styles.actionButton} onPress={() => handleDelete(employee.id)}>
             <Trash2 size={18} color="#ef4444" />
           </TouchableOpacity>
         </View>
@@ -261,10 +251,8 @@ const logOut = () => {
             onChangeText={setSearchQuery}
           />
         </View>
-        <TouchableOpacity 
-          style={styles.addButton}
-          onPress={() => openModal('addEmployee')}
-        >
+
+        <TouchableOpacity style={styles.addButton} onPress={() => openModal('addEmployee')}>
           <Plus size={20} color="white" />
           <Text style={styles.addButtonText}>Add Employee</Text>
         </TouchableOpacity>
@@ -282,16 +270,23 @@ const logOut = () => {
   const AttendanceView = () => (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Today's Attendance - November 21, 2025</Text>
+
       <FlatList
         data={attendance}
         renderItem={({ item }:any) => {
-          const hours :any = item.checkIn && item.checkOut ? 
-            ((new Date(`2025-11-21 ${item.checkOut}`) - new Date(`2025-11-21 ${item.checkIn}`)) / 3600000).toFixed(1) : 
-            '-';
-          
+          const hours =
+            item.checkIn && item.checkOut
+              ? (
+                  (new Date(`2025-11-21T${item.checkOut}:00`).getTime() -
+                    new Date(`2025-11-21T${item.checkIn}:00`).getTime()) /
+                  3600000
+                ).toFixed(1)
+              : '-';
+
           return (
             <View style={styles.attendanceItem}>
               <Text style={styles.employeeName}>{getEmployeeName(item.employeeId)}</Text>
+
               <View style={styles.attendanceDetails}>
                 <View style={[
                   styles.statusBadge,
@@ -304,6 +299,7 @@ const logOut = () => {
                     {item.status}
                   </Text>
                 </View>
+
                 <Text style={styles.attendanceTime}>In: {item.checkIn || '-'}</Text>
                 <Text style={styles.attendanceTime}>Out: {item.checkOut || '-'}</Text>
                 <Text style={styles.hoursText}>{hours} hrs</Text>
@@ -311,7 +307,7 @@ const logOut = () => {
             </View>
           );
         }}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -320,12 +316,14 @@ const logOut = () => {
   const LeaveView = () => (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Leave Requests</Text>
+
       <FlatList
         data={leaves}
         renderItem={({ item }) => (
           <View style={styles.leaveItem}>
             <View style={styles.leaveHeader}>
               <Text style={styles.employeeName}>{getEmployeeName(item.employeeId)}</Text>
+
               <View style={[
                 styles.statusBadge,
                 { 
@@ -346,9 +344,11 @@ const logOut = () => {
                 </Text>
               </View>
             </View>
+
             <Text style={styles.leaveType}>{item.type}</Text>
             <Text style={styles.leaveDates}>{item.startDate} to {item.endDate}</Text>
             <Text style={styles.leaveReason}>{item.reason}</Text>
+
             {item.status === 'Pending' && (
               <View style={styles.leaveActions}>
                 <TouchableOpacity 
@@ -357,6 +357,7 @@ const logOut = () => {
                 >
                   <Text style={styles.leaveButtonText}>Approve</Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity 
                   style={[styles.leaveButton, { backgroundColor: '#ef4444' }]}
                   onPress={() => handleLeaveAction(item.id, 'Rejected')}
@@ -367,7 +368,7 @@ const logOut = () => {
             )}
           </View>
         )}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -385,10 +386,10 @@ const logOut = () => {
     </TouchableOpacity>
   );
 
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
+
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <View style={styles.logo}>
@@ -396,41 +397,18 @@ const logOut = () => {
           </View>
           <Text style={styles.headerTitle}>Admin Dashboard</Text>
         </View>
+
         <TouchableOpacity style={styles.logoutButton}>
           <LogOut size={20} color="#6b7280" />
-          <Text onPress={logOut} style={styles.logoutText}>Logout</Text>
+          <Text  style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.tabContainer}>
-        <TabButton
-          id="dashboard"
-          label="Dashboard"
-          icon={Users}
-          isActive={activeTab === 'dashboard'}
-          onPress={() => setActiveTab('dashboard')}
-        />
-        <TabButton
-          id="employees"
-          label="Employees"
-          icon={Users}
-          isActive={activeTab === 'employees'}
-          onPress={() => setActiveTab('employees')}
-        />
-        <TabButton
-          id="attendance"
-          label="Attendance"
-          icon={Clock}
-          isActive={activeTab === 'attendance'}
-          onPress={() => setActiveTab('attendance')}
-        />
-        <TabButton
-          id="leaves"
-          label="Leaves"
-          icon={Calendar}
-          isActive={activeTab === 'leaves'}
-          onPress={() => setActiveTab('leaves')}
-        />
+        <TabButton id="dashboard" label="Dashboard" icon={Users} isActive={activeTab === 'dashboard'} onPress={() => setActiveTab('dashboard')} />
+        <TabButton id="employees" label="Employees" icon={Users} isActive={activeTab === 'employees'} onPress={() => setActiveTab('employees')} />
+        <TabButton id="attendance" label="Attendance" icon={Clock} isActive={activeTab === 'attendance'} onPress={() => setActiveTab('attendance')} />
+        <TabButton id="leaves" label="Leaves" icon={Calendar} isActive={activeTab === 'leaves'} onPress={() => setActiveTab('leaves')} />
       </View>
 
       <View style={styles.content}>
@@ -440,12 +418,8 @@ const logOut = () => {
         {activeTab === 'leaves' && <LeaveView />}
       </View>
 
-      <Modal
-        visible={showModal}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={closeModal}
-      >
+      {/* EMPLOYEE ADD/EDIT MODAL */}
+      <Modal visible={showModal} animationType="slide" transparent={true} onRequestClose={closeModal}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
@@ -522,6 +496,7 @@ const logOut = () => {
               <TouchableOpacity style={styles.cancelButton} onPress={closeModal}>
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
+
               <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
                 <Text style={styles.submitButtonText}>
                   {modalType === 'addEmployee' ? 'Add Employee' : 'Save Changes'}
@@ -531,23 +506,21 @@ const logOut = () => {
           </View>
         </View>
       </Modal>
-      <Modal
-  visible={attendanceModalVisible}
-  transparent={true}
-  animationType="fade"
->
-  <View style={styles.modalOverlay}>
-    <View style={styles.modalBox}>
-      <Text style={styles.modalText}>{attendanceModalMessage}</Text>
-      <TouchableOpacity
-        style={styles.modalBtn}
-        onPress={() => setAttendanceModalVisible(false)}
-      >
-        <Text style={styles.modalBtnText}>OK</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-</Modal>
+
+      {/* ATTENDANCE ALERT MODAL */}
+      <Modal visible={attendanceModalVisible} transparent={true} animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalBox}>
+            <Text style={styles.modalText}>{attendanceModalMessage}</Text>
+            <TouchableOpacity
+              style={styles.modalBtn}
+              onPress={() => setAttendanceModalVisible(false)}
+            >
+              <Text style={styles.modalBtnText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
     </SafeAreaView>
   );
@@ -965,39 +938,30 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '500',
   },
-    //  modalOverlay: {
-    //     flex: 1,
-    //     backgroundColor: "rgba(0,0,0,0.5)",
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    // },
 
-    modalBox: {
-        width: "80%",
-        backgroundColor: "#fff",
-        borderRadius: 12,
-        padding: 20,
-        elevation: 5,
-        alignItems: "center",
-    },
-
-    modalText: {
-        fontSize: 16,
-        fontWeight: "600",
-        marginBottom: 15,
-        textAlign: "center",
-    },
-
-    modalBtn: {
-        backgroundColor: "#0b84ff",
-        paddingVertical: 10,
-        paddingHorizontal: 30,
-        borderRadius: 8,
-    },
-
-    modalBtnText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "700",
-    },
+  modalBox: {
+    width: "80%",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 20,
+    elevation: 5,
+    alignItems: "center",
+  },
+  modalText: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  modalBtn: {
+    backgroundColor: "#0b84ff",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+  },
+  modalBtnText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "700",
+  },
 });

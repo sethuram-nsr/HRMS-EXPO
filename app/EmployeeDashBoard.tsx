@@ -58,7 +58,7 @@ export default function EmployeeDashBoard() {
     name: '', position: '', department: '', email: '', salary: '', status: 'Active'
   });
 
-  const openModal = (type=null, employee = null) => {
+  const openModal = (type: any = null, employee: any = null) => {
     setModalType(type==null ? '' : type);
     if (employee) {
       setSelectedEmployee(employee);
@@ -90,7 +90,7 @@ export default function EmployeeDashBoard() {
       };
       setEmployees([...employees, newEmployee]);
     } else {
-      setEmployees(employees.map(emp => 
+      setEmployees(employees.map((emp: { id: any; }) => 
         emp.id === selectedEmployee.id ? { ...emp, ...formData, salary: parseFloat(formData.salary) } : emp
       ));
     }
@@ -106,26 +106,26 @@ export default function EmployeeDashBoard() {
         { 
           text: 'Delete', 
           style: 'destructive',
-          onPress: () => setEmployees(employees.filter(emp => emp.id !== id))
+          onPress: () => setEmployees(employees.filter((emp: { id: any; }) => emp.id !== id))
         }
       ]
     );
   };
 
-  const handleLeaveAction = (leaveId=null, action=null) => {
-    setLeaves(leaves.map(leave=> 
+const handleLeaveAction = (leaveId: any, action: any) => {
+    setLeaves(leaves.map((leave: { id: null; })=> 
       leave.id === leaveId ? { ...leave, status: action } : leave
     ));
   };
 
-  const filteredEmployees = employees.filter(emp =>
+  const filteredEmployees = employees.filter((emp: { name: string; position: string; department: string; }) =>
     emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     emp.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
     emp.department.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getEmployeeName = (employeeId) => {
-    const emp = employees.find(e => e.id === employeeId);
+  const getEmployeeName = (employeeId: any) => {
+    const emp = employees.find((e: { id: any; }) => e.id === employeeId);
     return emp ? emp.name : 'Unknown';
   };
 
@@ -154,19 +154,19 @@ export default function EmployeeDashBoard() {
         />
         <StatCard
           title="Present Today"
-          value={attendance.filter(a => a.status === 'Present').length.toString()}
+          value={attendance.filter((a:{status:string}) => a.status === 'Present').length.toString()}
           color="#10b981"
           icon={Clock}
         />
         <StatCard
           title="Pending Leaves"
-          value={leaves.filter(l => l.status === 'Pending').length.toString()}
+          value={leaves.filter((l: { status: string; }) => l.status === 'Pending').length.toString()}
           color="#f59e0b"
           icon={FileText}
         />
         <StatCard
           title="On Leave"
-          value={employees.filter(e => e.status === 'On Leave').length.toString()}
+          value={employees.filter((e: { status: string; }) => e.status === 'On Leave').length.toString()}
           color="#8b5cf6"
           icon={Calendar}
         />

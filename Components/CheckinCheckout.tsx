@@ -20,7 +20,7 @@ const STORAGE_KEY = "@checkin_history_v1";
 
 export default function CheckInOut({ showModal }: any) {
     const [status, setStatus] = useState("out"); // 'in' or 'out'
-    const [lastRecord, setLastRecord] = useState(null);
+    const [lastRecord, setLastRecord] = useState<any>(null);
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
@@ -47,9 +47,9 @@ export default function CheckInOut({ showModal }: any) {
     };
 
     // Save a new record (and update UI)
-    const saveRecord = async (record) => {
+    const saveRecord = async (record :any) => {
         try {
-            const next = [...history, record];
+            const next:any = [...history, record];
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
             setHistory(next);
             setLastRecord(record);
@@ -101,7 +101,7 @@ export default function CheckInOut({ showModal }: any) {
     };
 
     const nowISO = () => new Date().toISOString();
-    const humanTime = (iso) => {
+    const humanTime = (iso:any) => {
         try {
             const d = new Date(iso);
             return d.toLocaleString();
@@ -220,7 +220,7 @@ export default function CheckInOut({ showModal }: any) {
             <FlatList
                 style={styles.historyList}
                 data={[...history].reverse()} // show latest first
-                keyExtractor={(i) => i.id}
+                keyExtractor={(i:any) => i.id}
                 renderItem={renderItem}
                 ListEmptyComponent={<Text style={styles.empty}>No check-in / check-out records.</Text>}
             />

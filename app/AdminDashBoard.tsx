@@ -387,7 +387,7 @@ export default function AdminDashBoard() {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.header}>
@@ -398,10 +398,10 @@ export default function AdminDashBoard() {
           <Text style={styles.headerTitle}>Admin Dashboard</Text>
         </View>
 
-        <TouchableOpacity style={styles.logoutButton}>
+        {/* <TouchableOpacity style={styles.logoutButton}>
           <LogOut size={20} color="#6b7280" />
           <Text  style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.tabContainer}>
@@ -522,7 +522,7 @@ export default function AdminDashBoard() {
         </View>
       </Modal>
 
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -543,11 +543,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 3,
+    
   },
   headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+  
   },
   logo: {
     width: 40,

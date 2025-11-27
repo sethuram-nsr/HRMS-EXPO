@@ -1,11 +1,8 @@
-import { Stack } from "expo-router";
 
-export default function RootLayout() {
+import BottomTabs from "./BottomTabs";
+
+export default function TabsLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false, 
-      }}
-    />
+ <BottomTabs/>
   );
 }

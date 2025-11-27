@@ -4,8 +4,7 @@
     "slug": "HRMS-DEMO",
     "version": "1.0.0",
     "orientation": "portrait",
-
-    "icon": "../assets/images/icon.png",
+    "icon": "",
 
     "scheme": "hrmsdemo",
     "userInterfaceStyle": "automatic",
@@ -17,7 +16,7 @@
 
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "",
         "backgroundColor": "#FFFFFF"
       },
       "edgeToEdgeEnabled": true,
@@ -27,7 +26,7 @@
 
     "web": {
       "output": "static",
-      "icon": "./assets/icon.png",
+      "icon": "",
       "name": "Login"
     },
 
@@ -36,7 +35,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon.png",
+          "image": "",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"

@@ -30,6 +30,8 @@ export default function CheckInOut({ showModal }: any) {
     const loadHistory = async () => {
         try {
             const raw = await AsyncStorage.getItem(STORAGE_KEY);
+            console.log(raw,"raw");
+            
             const parsed = raw ? JSON.parse(raw) : [];
             setHistory(parsed);
             if (parsed.length > 0) {

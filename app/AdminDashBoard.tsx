@@ -10,7 +10,6 @@ import {
   StyleSheet,
   FlatList,
   StatusBar,
-  SafeAreaView
 } from 'react-native';
 import { 
   Users, 

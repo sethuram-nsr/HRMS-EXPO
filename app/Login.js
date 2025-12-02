@@ -3,7 +3,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import img from "../assets/images/icon.png";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootSiblingParent } from 'react-native-root-siblings';
@@ -174,7 +173,6 @@ export default function Login({ navigation, route }) {
 
           <View style={{ alignItems: "center", marginTop: 40, marginBottom: 20 }}>
 
-            <Image source={img} style={styles.img}></Image>
           </View>
 
           <View style={styles.inputbox}>
@@ -338,10 +336,7 @@ const styles = StyleSheet.create({
     fontFamily: "serif",
     marginVertical: 10,
   },
-  img: {
-    width: 155,
-    height: 60,
-  },
+
   bot: {
     position: "absolute",
     alignSelf: "flex-end",

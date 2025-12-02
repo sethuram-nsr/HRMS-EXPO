@@ -5,54 +5,52 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "",
-
     "scheme": "hrmsdemo",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false,
-
+    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sethuram.natarajan.hrmsdemo",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
-
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "",
+        "foregroundImage": "./assets/adaptive-icon.png",  
         "backgroundColor": "#FFFFFF"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.sethuram.natarajan.hrmsdemo"
     },
-
     "web": {
       "output": "static",
-      "icon": "",
+      "icon": "./assets/web-icon.png",
       "name": "Login"
     },
-
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "",
+          "image": "./assets/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
       ]
     ],
-
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
-
     "extra": {
       "router": {},
       "eas": {
         "projectId": "3aaa733e-80f1-4182-b2b2-ab98c3c2b719"
       }
-    }
+    },
+    "owner": "sethuram_natarajan"
   }
 }

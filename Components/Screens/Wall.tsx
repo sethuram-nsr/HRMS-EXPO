@@ -8,10 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Fazil from "../../assets/Fazil.png";
-import Sethu from "../../assets/sethu.png";
-import Mugil from "../../assets/mugil.png";
-import Vikram from "../../assets/vikram.png";
+
 
 export default function Wall() {
   const [posts, setPosts] = useState([
@@ -21,7 +18,7 @@ export default function Wall() {
       avatar: "https://randomuser.me/api/portraits/men/11.jpg",
       time: "2 hrs ago",
       content: "N weeks and 7 days is still not enough time. #worklife",
-      image: Fazil, 
+      image: " https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=60", 
       likes: 12,
       comments: 3,
     },
@@ -32,7 +29,7 @@ export default function Wall() {
       time: "5 hrs ago",
       content: "!",
       image:
-        Sethu,
+        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=800&q=60",
       likes: 30,
       comments: 10,
     },
@@ -42,7 +39,7 @@ export default function Wall() {
       avatar: "https://randomuser.me/api/portraits/men/22.jpg",
       time: "1 day ago",
       content: "Work hard, stay humble 💪",
-      image: Mugil,
+      image:  " https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=60",
       likes: 5,
       comments: 1,
     },
@@ -52,7 +49,7 @@ export default function Wall() {
       avatar: "https://randomuser.me/api/portraits/men/22.jpg",
       time: "1 day ago",
       content: " stay humble 💪",
-      image:Vikram ,
+      image:" https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=60",
       likes: 5,
       comments: 1,
     },

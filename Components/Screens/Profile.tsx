@@ -8,14 +8,14 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import img from "../../assets/images/Fazil.png";
+
 
 export default function ProfileScreen() {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* HEADER */}
       <View style={styles.header}>
-        <Image source={img} style={styles.avatar} />
+
 
         <Text style={styles.name}>Fazil</Text>
         <Text style={styles.email}>Fazil@gmail.com</Text>
